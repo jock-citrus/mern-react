@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import './NavLinks.css';
 
 const NavLinks = () => {
+  // NavLink is same as Link but interprets current route and adds active
+  // pseudo class to nested anchor tag etc.
   return <ul className="nav-links">
     <li>
       <NavLink to="/" exact>ALL USERS</NavLink>
