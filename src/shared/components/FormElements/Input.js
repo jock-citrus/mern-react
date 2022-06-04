@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 
+import { validate } from '../../util/validators';
 import './Input.css';
 
 const inputReducer = (state, action) => {
@@ -8,33 +9,42 @@ const inputReducer = (state, action) => {
       return {
         ...state,
         value: action.value,
-        isValid: true
+        isValid: validate(action.value, action.validators)
       };
+    case 'TOUCH':
+      return {
+        ...state,
+        isTouched: true
+      }
     default:
       return state;
   }
 };
 
 const Input = props => {
-  const [inputState, inputDispatch] = useReducer(inputReducer, { value: '', isValid: false });
+  const [{ value, isValid, isTouched }, inputDispatch] = useReducer(inputReducer, { value: '', isValid: false, isTouched:false });
 
   const changeHandler = event => {
-    inputDispatch({ type: 'CHANGE', value: event.target.value })
+    inputDispatch({ type: 'CHANGE', value: event.target.value, validators: props.validators })
+  }
+
+  const touchHandler = () => {
+    inputDispatch({ type: 'TOUCH' })
   }
 
   const element =
     props.element === 'input' ? (
-      <input id={props.id} type={props.type} value={inputState.value} placeholder={props.placeholder} onChange={changeHandler}/>
+      <input id={props.id} type={props.type} value={value} placeholder={props.placeholder} onChange={changeHandler} onBlur={touchHandler}/>
     ) : (
-      <textarea id={props.id} value={inputState.value} rows={props.rows || 3} onChange={changeHandler}/>
+      <textarea id={props.id} value={value} rows={props.rows || 3} onChange={changeHandler} onBlur={touchHandler}/>
     );
 
-
+  const showError = !isValid && isTouched;
   return (
-    <div className={`form-control ${!inputState.isValid && 'form-control--invalid'}`}>
+    <div className={`form-control ${showError && 'form-control--invalid'}`}>
       <label htmlFor={props.id}>{props.label}</label>
       {element}
-      {!inputState.isValid && <p>{props.errorText}</p>}
+      {showError && <p>{props.errorText}</p>}
     </div>
   );
 };
