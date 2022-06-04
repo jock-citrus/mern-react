@@ -39,7 +39,7 @@ const Input = props => {
 
   const element =
     props.element === 'input' ? (
-      <input id={props.id} type={props.type} value={value} placeholder={props.placeholder} onChange={changeHandler} onBlur={touchHandler}/>
+      <input id={props.id} type={props.type || 'text'} value={value} placeholder={props.placeholder} onChange={changeHandler} onBlur={touchHandler}/>
     ) : (
       <textarea id={props.id} value={value} rows={props.rows || 3} onChange={changeHandler} onBlur={touchHandler}/>
     );
