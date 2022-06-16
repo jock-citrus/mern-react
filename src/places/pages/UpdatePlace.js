@@ -19,7 +19,7 @@ const UpdatePlace = () => {
     )
   }
 
-  return <form>
+  return <form className="place-form">
     <Input id="title" element="input" type="text" label="Title" validators={[VALIDATOR_REQUIRED()]} errorText="Please enter a valid title" onInput={() => {}} value={place.title} valid={true}/>
     <Input id="description" element="textarea" label="Description" validators={[VALIDATOR_MIN_LENGTH(5)]} errorText="Please enter a valid description (min 5 chars)" onInput={() => {}} value={place.description} valid={true}/>
     <Button type="submit" disabled={true}>UPDATE PLACE</Button>
